@@ -53,5 +53,68 @@ class 第三章業務ロジックをわかりやすく説明する {
     // メソッド -> 判断/加工/計算をするもの
 
     /* よいメソッド */
+    class PersonName {
+        private String firstName;
+        private Strig lastName;
+        // メソッドにロジックをもたせるのが良いメソッド
+        String fullName() {
+            return String.format("%s%s", firstName, lastName);
+        }
+    }
+    // データを持つクラスに業務ロジックを集めることがコードの重複や散財を防ぐ
+    // データを持つクラスに業務ロジックを集約させることはOOPの基本
+    // ロジックをどこに持たせるか考えるのが設計
+
+    /* メソッドにインスタンスヘンスを使う */
+    /* 良くない例 */
+    BigDecimal total(BigDecimal unitPrice, BigDecimal quantity) {
+        BigDecimal total = unitPrice.multiply(quantity);
+        return total.setScale(0, ROUND_HALF_UP);
+    }
+
+    class Customer {
+
+        String postalCode;
+        String city;
+        String address;
+
+        String telephone;
+        String mailAddress;
+        boolean telephoneNotPreferred;
+
+        // ここから下を外部に切り出したい
+        String firstName;
+        String lastName;
+        String fullName() {
+            return String.format("%s%s", firstName, lastName);
+        }
+        // これをこうじゃ
+        class PersonName {
+            private String firstName;
+            private String lastName;
+
+            String fullName() {
+                return String.format("%s%s", firstName, lastName);
+            }
+        }
+    }
+
+    class Customer {
+        PersonName personName;
+        Address address;
+        ContactMethod contactMethod;
+    }
+
+    /**
+     * クラスを沢山作りすぎるとどこに何があるのかわからなるよなあ？？
+     * ええ！？パッケージを使用すればそれが解決するんですか？？？
+     *
+     * パッケージ作成の観点
+     * なるべくパッケージスコープで変数の宣言が出来るようにする
+     *
+     * パッケージによる整理は常に行っていく
+     * */
+
+
 
 }
